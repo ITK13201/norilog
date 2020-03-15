@@ -1,2 +1,6 @@
 # pipenv 
 .venv/
+
+# vscode
+.vscode
+pypro3.code-workspace
