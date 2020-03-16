@@ -1,4 +1,7 @@
 import json
+from flask import Flask, render_template
+
+application = Flask(__name__)
 
 DATA_FILE = 'noring.json'
 
@@ -31,9 +34,21 @@ def save_data(start, finish, memo, created_at):
     json.dump(database, open(DATA_FILE, mode='w', encoding='utf-8'), indent=4, ensure_ascii=False)
 
 def load_data():
+    """投稿されたデータを返す"""
     try:
         # json モジュールでデータベースを開く
         database = json.load(open(DATA_FILE, mode='r', encoding='utf-8'))
     except FileNotFoundError:
         database = []
     return database
+
+@application.route('/')
+def index():
+    """トップページテンプレートを使用してページを表示する"""
+    # 記録データを読み込む
+    rides = load_data()
+    return render_template('index.html', rides=rides)
+
+if __name__ == '__main__':
+    # IP アドレス0.0.0.0の8000番ポートでアプリケーションを実行する
+    application.run('0.0.0.0', 8000, debug=True)
