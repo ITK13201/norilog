@@ -1,5 +1,6 @@
 import json
-from flask import Flask, render_template
+from datetime import datetime
+from flask import Flask, render_template, redirect, Markup, escape, request
 
 application = Flask(__name__)
 
@@ -48,6 +49,23 @@ def index():
     # 記録データを読み込む
     rides = load_data()
     return render_template('index.html', rides=rides)
+
+@application.route('/save', methods=['POST'])
+def save():
+    """記録用 URL"""
+    # 記録されたデータを取得する
+    start = request.form.get('start') # 出発
+    finish = request.form.get('finish') # 到着
+    memo = request.form.get('memo') # メモ
+    create_at = datetime.now() # 記録日時（現在時間）データを保存する
+    save_data(start, finish, memo, create_at)
+    # 保存後はトップページにリダイレクトする
+    return redirect('/')
+    
+@application.template_filter('n12br')
+def n12br_filter(s):
+    """改行文字を <br> タグに置き換えるテンプレートフィルター"""
+    return escape(s).replace('\n', Markup('<br>'))
 
 if __name__ == '__main__':
     # IP アドレス0.0.0.0の8000番ポートでアプリケーションを実行する

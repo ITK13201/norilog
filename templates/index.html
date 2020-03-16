@@ -41,18 +41,14 @@
             <th>日時</th>
             <th>メモ</th>
         </tr>
+        {% for ride in rides %}
         <tr>
-            <td>御嶽山</td>
-            <td>片瀬江ノ島</td>
-            <td>2017-10-31</td>
-            <td>サーフィン</td>
+            <td>{{ ride.start }}</td>
+            <td>{{ ride.finish }}</td>
+            <td>{{ ride.created_at }}</td>
+            <td>{{ ride.memo|n12br }}</td>
         </tr>
-        <tr>
-            <td>御嶽山</td>
-            <td>代々木</td>
-            <td>2017-10-31</td>
-            <td>BPStudy</td>
-        </tr>
+        {% endfor %}
     </table>
 </body>
 </html>
